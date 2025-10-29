@@ -1,0 +1,48 @@
+{
+  "properties": {
+    "connectionParameters": {
+      "username": {
+        "type": "string",
+        "uiDefinition": {
+          "displayName": "Username",
+          "description": "Enter your username for authentication",
+          "tooltip": "Provide your username",
+          "constraints": {
+            "tabIndex": 2,
+            "clearText": true,
+            "required": "true"
+          }
+        }
+      },
+      "password": {
+        "type": "securestring",
+        "uiDefinition": {
+          "displayName": "Password",
+          "description": "Enter your password for authentication",
+          "tooltip": "Provide your password",
+          "constraints": {
+            "tabIndex": 3,
+            "clearText": false,
+            "required": "true"
+          }
+        }
+      }
+    },
+    "iconBrandColor": "#da3b01",
+    "capabilities": [],
+    "policyTemplateInstances": [
+      {
+        "templateId": "setproperty",
+        "title": "Set Authorization Basic Header",
+        "parameters": {
+          "x-ms-apimTemplateParameter.name": "Authorization",
+          "x-ms-apimTemplateParameter.value": "Basic @{base64(concat(connectionParameters('username'), ':', connectionParameters('password')))}",
+          "x-ms-apimTemplateParameter.existsAction": "override",
+          "x-ms-apimTemplate-policySection": "Request"
+        }
+      }
+    ],
+    "publisher": "Troy Taylor, Hitachi Solutions",
+    "stackOwner": "Model Context Protocol"
+  }
+}

@@ -1,0 +1,148 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Model Context Protocol",
+        "description": "Template connector for integrating MCP (Model Context Protocol) servers with Power Platform. MCP enables AI applications to connect to various data sources and tools through a standardized protocol. This template handles JSON-RPC 2.0 communication, lifecycle management, and capability negotiation.",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Troy Taylor",
+            "email": "ttaylor@hitachi-solutions.com"
+        }
+    },
+    "host": "your-mcp-server.example.com",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/mcp": {
+            "post": {
+                "summary": "Invoke AI Agent or MCP Server",
+                "description": "Execute AI agent requests with orchestration and generation capabilities, or send traditional MCP JSON-RPC 2.0 requests. Agent mode uses AI models (OpenAI/Azure OpenAI) to orchestrate tool calls, generate responses, and manage conversations. MCP mode provides direct access to protocol methods.",
+                "operationId": "InvokeMCP",
+                "x-ms-visibility": "important",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "x-ms-dynamic-schema": {
+                                "operationId": "GetSchema",
+                                "parameters": {},
+                                "value-path": "schema"
+                            },
+                            "x-ms-dynamic-properties": {
+                                "operationId": "GetSchema",
+                                "parameters": {}
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "response": {
+                                    "type": "string",
+                                    "description": "Natural language response from AI (Agent mode)"
+                                },
+                                "mode": {
+                                    "type": "string",
+                                    "description": "Execution mode used"
+                                },
+                                "execution": {
+                                    "type": "object",
+                                    "description": "Execution details including tool calls and results"
+                                },
+                                "metadata": {
+                                    "type": "object",
+                                    "description": "Execution metadata (tokens, cost, duration, model)"
+                                },
+                                "conversationHistory": {
+                                    "type": "array",
+                                    "description": "Updated conversation history (Chat mode)"
+                                },
+                                "error": {
+                                    "type": "string",
+                                    "description": "Error message if request failed"
+                                },
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "description": "JSON-RPC version (MCP mode)"
+                                },
+                                "result": {
+                                    "type": "object",
+                                    "description": "Method result (MCP mode)"
+                                },
+                                "id": {
+                                    "type": [
+                                        "string",
+                                        "number"
+                                    ],
+                                    "description": "Request identifier (MCP mode)"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid request format"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/schema": {
+            "get": {
+                "summary": "Get Dynamic Schema",
+                "description": "Returns the dynamic schema for the request body based on mode",
+                "operationId": "GetSchema",
+                "x-ms-visibility": "internal",
+                "responses": {
+                    "200": {
+                        "description": "Schema definition",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "parameters": {},
+    "responses": {},
+    "securityDefinitions": {},
+    "security": [],
+    "tags": [],
+    "x-ms-connector-metadata": [
+        {
+            "propertyName": "Website",
+            "propertyValue": "https://modelcontextprotocol.io"
+        },
+        {
+            "propertyName": "Privacy policy",
+            "propertyValue": "https://modelcontextprotocol.io"
+        },
+        {
+            "propertyName": "Categories",
+            "propertyValue": "AI;Communication"
+        }
+    ]
+}

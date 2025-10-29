@@ -1,0 +1,166 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Model Context Protocol (Bearer Token Auth)",
+    "description": "Template connector for integrating MCP (Model Context Protocol) servers with Power Platform using Bearer Token authentication. MCP enables AI applications to connect to various data sources and tools through a standardized protocol. This template handles JSON-RPC 2.0 communication, lifecycle management, and capability negotiation.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Troy Taylor",
+      "email": "ttaylor@hitachi-solutions.com"
+    }
+  },
+  "host": "your-mcp-server.example.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/mcp": {
+      "post": {
+        "summary": "Invoke MCP Server",
+        "description": "Sends JSON-RPC 2.0 requests to the Model Context Protocol server for initialization, tool discovery, tool execution, and capability management. Supports the full MCP lifecycle including initialize, tools/list, tools/call, resources/list, resources/read, and notifications.",
+        "operationId": "InvokeMCP",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "jsonrpc": {
+                  "type": "string",
+                  "description": "JSON-RPC version (must be '2.0')",
+                  "default": "2.0",
+                  "x-ms-summary": "JSON-RPC Version"
+                },
+                "method": {
+                  "type": "string",
+                  "description": "The MCP method to call (e.g., 'initialize', 'tools/list', 'tools/call', 'resources/list', 'resources/read')",
+                  "x-ms-summary": "Method",
+                  "enum": [
+                    "initialize",
+                    "initialized",
+                    "ping",
+                    "tools/list",
+                    "tools/call",
+                    "resources/list",
+                    "resources/read",
+                    "resources/templates/list",
+                    "resources/subscribe",
+                    "resources/unsubscribe",
+                    "prompts/list",
+                    "prompts/get",
+                    "logging/setLevel",
+                    "completion/complete",
+                    "roots/list"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "description": "Parameters for the method call (varies by method)",
+                  "x-ms-summary": "Parameters"
+                },
+                "id": {
+                  "type": ["string", "number"],
+                  "description": "Request identifier for matching responses (not used for notifications)",
+                  "x-ms-summary": "Request ID"
+                }
+              },
+              "required": [
+                "jsonrpc",
+                "method"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful JSON-RPC response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "jsonrpc": {
+                  "type": "string",
+                  "description": "JSON-RPC version"
+                },
+                "result": {
+                  "type": "object",
+                  "description": "The result of the method call"
+                },
+                "id": {
+                  "type": ["string", "number"],
+                  "description": "Request identifier matching the request"
+                },
+                "error": {
+                  "type": "object",
+                  "description": "Error object if the request failed",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Additional error data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid JSON-RPC format"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing bearer token"
+          },
+          "500": {
+            "description": "Internal Server Error - MCP server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {},
+  "parameters": {},
+  "responses": {},
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://your-mcp-server.example.com/oauth/authorize",
+      "scopes": {}
+    }
+  },
+  "security": [
+    {
+      "oauth2": []
+    }
+  ],
+  "tags": [],
+  "x-ms-connector-metadata": [
+    {
+      "propertyName": "Website",
+      "propertyValue": "https://modelcontextprotocol.io"
+    },
+    {
+      "propertyName": "Privacy policy",
+      "propertyValue": "https://modelcontextprotocol.io"
+    },
+    {
+      "propertyName": "Categories",
+      "propertyValue": "AI;Communication"
+    }
+  ]
+}

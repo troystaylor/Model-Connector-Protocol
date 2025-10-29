@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "connectionParameters": {
+      "token": {
+        "type": "securestring",
+        "uiDefinition": {
+          "displayName": "Bearer Token",
+          "description": "Enter your MCP server bearer token for authentication",
+          "tooltip": "Provide the bearer token for your MCP server",
+          "constraints": {
+            "tabIndex": 2,
+            "clearText": false,
+            "required": "true"
+          }
+        }
+      }
+    },
+    "iconBrandColor": "#da3b01",
+    "capabilities": [],
+    "policyTemplateInstances": [
+      {
+        "templateId": "setheader",
+        "title": "Set Authorization Bearer Header",
+        "parameters": {
+          "x-ms-apimTemplateParameter.name": "Authorization",
+          "x-ms-apimTemplateParameter.value": "Bearer @connectionParameters('token')",
+          "x-ms-apimTemplateParameter.existsAction": "override",
+          "x-ms-apimTemplate-policySection": "Request"
+        }
+      }
+    ],
+    "publisher": "Troy Taylor, Hitachi Solutions",
+    "stackOwner": "Model Context Protocol"
+  }
+}
