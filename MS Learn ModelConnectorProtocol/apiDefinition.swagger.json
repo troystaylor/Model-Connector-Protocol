@@ -1,0 +1,302 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "MS Learn MConnectorP",
+        "description": "This connector brings Microsoft Learn documentation directly into Power Automate through an AI-powered assistant with Model Context Protocol implemented in custom code. Ask questions about Microsoft technologies and get accurate answers grounded in official Microsoft Learn documentation, complete with code samples and citations.",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Troy Taylor",
+            "email": "troy@troystaylor.com"
+        }
+    },
+    "host": "troystaylor.com",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/mcp": {
+            "post": {
+                "summary": "Invoke Microsoft Learn AI Agent",
+                "description": "Ask questions about Microsoft technologies and get answers grounded in official Microsoft Learn documentation. The AI agent searches and cites Microsoft Learn docs to provide accurate, authoritative guidance.",
+                "operationId": "InvokeMCP",
+                "x-ms-visibility": "important",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "input"
+                            ],
+                            "properties": {
+                                "input": {
+                                    "type": "string",
+                                    "title": "Input",
+                                    "description": "Your request or question for the AI agent",
+                                    "x-ms-summary": "Input"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "response": {
+                                    "type": "string",
+                                    "title": "Response",
+                                    "description": "AI-generated answer with citations and formatting in markdown"
+                                },
+                                "execution": {
+                                    "type": "object",
+                                    "title": "Execution",
+                                    "description": "Execution details including tool calls and resources accessed",
+                                    "properties": {
+                                        "toolCalls": {
+                                            "type": "array",
+                                            "title": "Tool Calls",
+                                            "description": "Details of Learn MCP tools that were executed",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "tool": {
+                                                        "type": "string",
+                                                        "title": "Tool",
+                                                        "description": "Tool name (e.g., microsoft_docs_search, microsoft_code_sample_search, microsoft_docs_fetch)"
+                                                    },
+                                                    "arguments": {
+                                                        "type": "object",
+                                                        "title": "Arguments",
+                                                        "description": "Arguments passed to the tool"
+                                                    },
+                                                    "result": {
+                                                        "type": "object",
+                                                        "title": "Result",
+                                                        "description": "Tool execution result",
+                                                        "properties": {
+                                                            "query": {
+                                                                "type": "string",
+                                                                "title": "Query",
+                                                                "description": "Search query used"
+                                                            },
+                                                            "results": {
+                                                                "type": "array",
+                                                                "title": "Results",
+                                                                "description": "Raw results from Learn MCP",
+                                                                "items": {
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "sources": {
+                                                                "type": "array",
+                                                                "title": "Sources",
+                                                                "description": "Extracted sources with URLs and page titles",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "url": {
+                                                                            "type": "string",
+                                                                            "title": "URL",
+                                                                            "description": "Microsoft Learn documentation page URL"
+                                                                        },
+                                                                        "title": {
+                                                                            "type": "string",
+                                                                            "title": "Title",
+                                                                            "description": "Page title from Microsoft Learn"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "sourceCount": {
+                                                                "type": "integer",
+                                                                "title": "Source Count",
+                                                                "description": "Number of sources found"
+                                                            }
+                                                        }
+                                                    },
+                                                    "success": {
+                                                        "type": "boolean",
+                                                        "title": "Success",
+                                                        "description": "Whether tool execution succeeded"
+                                                    },
+                                                    "error": {
+                                                        "type": "string",
+                                                        "title": "Error",
+                                                        "description": "Error message if tool execution failed"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "toolsExecuted": {
+                                            "type": "integer",
+                                            "title": "Tools Executed",
+                                            "description": "Number of tools executed"
+                                        },
+                                        "resourcesAccessed": {
+                                            "type": "array",
+                                            "title": "Resources Accessed",
+                                            "description": "Resources that were accessed during execution",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    }
+                                },
+                                "metadata": {
+                                    "type": "object",
+                                    "title": "Metadata",
+                                    "description": "Execution metadata including duration and model",
+                                    "properties": {
+                                        "tokensUsed": {
+                                            "type": "integer",
+                                            "title": "Tokens Used",
+                                            "description": "Total tokens used"
+                                        },
+                                        "estimatedCost": {
+                                            "type": "string",
+                                            "title": "Estimated Cost",
+                                            "description": "Estimated cost of the request"
+                                        },
+                                        "duration": {
+                                            "type": "string",
+                                            "title": "Duration",
+                                            "description": "Total execution time (e.g., 5.77s)"
+                                        },
+                                        "model": {
+                                            "type": "string",
+                                            "title": "Model",
+                                            "description": "AI model used (e.g., gpt-4o)"
+                                        }
+                                    }
+                                },
+                                "error": {
+                                    "type": "string",
+                                    "title": "Error",
+                                    "description": "Error message if request failed"
+                                }
+                            },
+                            "example": {
+                                "response": "### Overview of Power Platform Connectors\n\nPower Platform connectors are essential components that enable you to connect apps, data, and devices in the cloud, facilitating the integration between various platforms and services. They are used in Microsoft Power Automate, Power Apps, Azure Logic Apps, and more, to automate workflows and streamline business processes.\n\n#### Types of Connectors\n\n1. **Prebuilt Connectors**: These are predefined connectors that can be used directly without any modifications. They cater to commonly used business scenarios and include popular services like Salesforce, Office 365, Twitter (X), Dropbox, and Google services.\n\n2. **Custom Connectors**: If your required service or API isn't available as a prebuilt connector, you can create custom connectors. These allow you to define your own triggers and actions to suit specific needs.\n\n#### Usage in Different Products\n\n- **Power Automate**: Enables building workflows that automate repetitive tasks using its intuitive interface and numerous connectors.\n- **Power Apps**: Facilitates creating cloud-connected apps with minimal code, allowing for rapid development to meet unique business needs.\n- **Azure Logic Apps**: Provides a workflow engine that lets developers create workflows visually or programmatically in Azure, supporting enterprise integration scenarios.\n\n#### Custom Connectors Lifecycle\n\nCustom connectors wrap around REST APIs, allowing integration with services that are not available as prebuilt connectors. The lifecycle involves building the API, securing it, and defining it using OpenAPI definitions or Postman collections. These connectors can then be used across Power Automate, Power Apps, Logic Apps, and Copilot Studio.\n\nFor more detailed information, you can explore the following resources:\n- [Connectors Overview](https://learn.microsoft.com/en-us/connectors/overview)\n- [Custom Connectors Overview](https://learn.microsoft.com/en-us/connectors/custom-connectors/)\n\nThese resources will provide you with comprehensive guidance on how to utilize and create connectors within the Microsoft Power Platform.",
+                                "execution": {
+                                    "toolCalls": [
+                                        {
+                                            "tool": "microsoft_docs_search",
+                                            "arguments": {
+                                                "query": "Power Platform connectors overview"
+                                            },
+                                            "result": {
+                                                "query": "Power Platform connectors overview",
+                                                "sources": [
+                                                    {
+                                                        "url": "https://learn.microsoft.com/en-us/connectors/overview",
+                                                        "title": "Connectors overview"
+                                                    },
+                                                    {
+                                                        "url": "https://learn.microsoft.com/en-us/connectors/overview#use-connectors",
+                                                        "title": "Connectors overview"
+                                                    },
+                                                    {
+                                                        "url": "https://learn.microsoft.com/en-us/connectors/custom-connectors/",
+                                                        "title": "Custom connectors overview"
+                                                    }
+                                                ],
+                                                "sourceCount": 10
+                                            },
+                                            "success": true,
+                                            "error": null
+                                        }
+                                    ],
+                                    "toolsExecuted": 1
+                                },
+                                "metadata": {
+                                    "duration": "5.77s",
+                                    "model": "gpt-4o"
+                                },
+                                "error": null
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid request format",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "title": "Error",
+                                    "description": "Error message"
+                                },
+                                "errorType": {
+                                    "type": "string",
+                                    "title": "Error Type",
+                                    "description": "Type of error (e.g., ValidationError, InvalidInput)"
+                                },
+                                "errorCode": {
+                                    "type": "string",
+                                    "title": "Error Code",
+                                    "description": "Machine-readable error code"
+                                },
+                                "details": {
+                                    "type": "string",
+                                    "title": "Details",
+                                    "description": "Additional error details"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "title": "Error",
+                                    "description": "Error message"
+                                },
+                                "errorType": {
+                                    "type": "string",
+                                    "title": "Error Type",
+                                    "description": "Type of error (e.g., ModelError, ToolExecutionError, NetworkError)"
+                                },
+                                "errorCode": {
+                                    "type": "string",
+                                    "title": "Error Code",
+                                    "description": "Machine-readable error code"
+                                },
+                                "details": {
+                                    "type": "string",
+                                    "title": "Details",
+                                    "description": "Stack trace or additional error information"
+                                },
+                                "response": {
+                                    "type": "string",
+                                    "title": "Response",
+                                    "description": "Null response field for consistency"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "parameters": {},
+    "responses": {},
+    "securityDefinitions": {},
+    "security": [],
+    "tags": []
+}

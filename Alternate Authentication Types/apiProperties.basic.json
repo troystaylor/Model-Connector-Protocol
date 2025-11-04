@@ -1,0 +1,48 @@
+{
+  "properties": {
+    "connectionParameters": {
+      "username": {
+        "type": "string",
+        "uiDefinition": {
+          "displayName": "Username",
+          "description": "Enter your username",
+          "tooltip": "Username for basic authentication",
+          "constraints": {
+            "tabIndex": 1,
+            "clearText": false,
+            "required": "true"
+          }
+        }
+      },
+      "password": {
+        "type": "securestring",
+        "uiDefinition": {
+          "displayName": "Password",
+          "description": "Enter your password",
+          "tooltip": "Password for basic authentication",
+          "constraints": {
+            "tabIndex": 2,
+            "clearText": false,
+            "required": "true"
+          }
+        }
+      }
+    },
+    "iconBrandColor": "#da3b01",
+    "capabilities": [],
+    "policyTemplateInstances": [
+      {
+        "templateId": "setproperty",
+        "title": "Set Basic Auth",
+        "parameters": {
+          "x-ms-apimTemplateParameter.name": "Authorization",
+          "x-ms-apimTemplateParameter.value": "Basic @{base64(concat(connectionParameters('username'),':',connectionParameters('password')))}",
+          "x-ms-apimTemplateParameter.existsAction": "override",
+          "x-ms-apimTemplate-policySection": "Request"
+        }
+      }
+    ],
+    "publisher": "Troy Taylor",
+    "stackOwner": "Model Context Protocol"
+  }
+}

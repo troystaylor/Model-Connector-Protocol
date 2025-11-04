@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "connectionParameters": {
+      "token": {
+        "type": "securestring",
+        "uiDefinition": {
+          "displayName": "Bearer Token",
+          "description": "Enter your bearer token",
+          "tooltip": "Bearer token for authentication",
+          "constraints": {
+            "tabIndex": 1,
+            "clearText": false,
+            "required": "true"
+          }
+        }
+      }
+    },
+    "iconBrandColor": "#da3b01",
+    "capabilities": [],
+    "policyTemplateInstances": [
+      {
+        "templateId": "setheader",
+        "title": "Set Bearer Token",
+        "parameters": {
+          "x-ms-apimTemplateParameter.name": "Authorization",
+          "x-ms-apimTemplateParameter.value": "Bearer @connectionParameters('token')",
+          "x-ms-apimTemplateParameter.existsAction": "override",
+          "x-ms-apimTemplate-policySection": "Request"
+        }
+      }
+    ],
+    "publisher": "Troy Taylor",
+    "stackOwner": "Model Context Protocol"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "connectionParameters": {
+      "token": {
+        "type": "oauthSetting",
+        "oAuthSettings": {
+          "identityProvider": "oauth2",
+          "clientId": "YOUR_CLIENT_ID",
+          "scopes": [],
+          "redirectMode": "Global",
+          "redirectUrl": "https://global.consent.azure-apim.net/redirect",
+          "properties": {
+            "IsFirstParty": "False"
+          },
+          "customParameters": {
+            "authorizationUrl": {
+              "value": "https://your-auth-server.com/oauth/authorize"
+            },
+            "tokenUrl": {
+              "value": "https://your-auth-server.com/oauth/token"
+            },
+            "refreshUrl": {
+              "value": "https://your-auth-server.com/oauth/token"
+            }
+          }
+        }
+      }
+    },
+    "iconBrandColor": "#da3b01",
+    "capabilities": [],
+    "policyTemplateInstances": [],
+    "publisher": "Troy Taylor",
+    "stackOwner": "Model Context Protocol"
+  }
+}

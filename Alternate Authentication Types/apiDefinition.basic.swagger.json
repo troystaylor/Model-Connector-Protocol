@@ -1,0 +1,170 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Model Connector Protocol",
+        "description": "AI agent connector for Power Platform that supports tool orchestration, resource access, and AI model integration through custom code. Works with Anthropic Claude and OpenAI models.",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Troy Taylor",
+            "email": "troy@troystaylor.com"
+        }
+    },
+    "host": "your-mcp-server.example.com",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/mcp": {
+            "post": {
+                "summary": "Invoke AI Agent",
+                "description": "Execute AI agent requests with tool orchestration and resource access. Supports Anthropic Claude and OpenAI models with automatic tool execution.",
+                "operationId": "InvokeMCP",
+                "x-ms-visibility": "important",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "input"
+                            ],
+                            "properties": {
+                                "input": {
+                                    "type": "string",
+                                    "title": "Input",
+                                    "description": "Your request or question for the AI agent",
+                                    "x-ms-summary": "Input"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "response": {
+                                    "type": "string",
+                                    "description": "Natural language response from AI agent"
+                                },
+                                "execution": {
+                                    "type": "object",
+                                    "description": "Execution details including tool calls and resources accessed",
+                                    "properties": {
+                                        "toolCalls": {
+                                            "type": "array",
+                                            "description": "Tools that were executed"
+                                        },
+                                        "toolsExecuted": {
+                                            "type": "integer",
+                                            "description": "Number of tools executed"
+                                        },
+                                        "resourcesAccessed": {
+                                            "type": "array",
+                                            "description": "Resources that were accessed"
+                                        }
+                                    }
+                                },
+                                "metadata": {
+                                    "type": "object",
+                                    "description": "Execution metadata",
+                                    "properties": {
+                                        "tokensUsed": {
+                                            "type": "integer",
+                                            "description": "Total tokens used"
+                                        },
+                                        "estimatedCost": {
+                                            "type": "string",
+                                            "description": "Estimated cost of the request"
+                                        },
+                                        "duration": {
+                                            "type": "string",
+                                            "description": "Total execution time"
+                                        },
+                                        "model": {
+                                            "type": "string",
+                                            "description": "Model used for the request"
+                                        }
+                                    }
+                                },
+                                "error": {
+                                    "type": "string",
+                                    "description": "Error message if request failed"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid request format",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "description": "Error message"
+                                },
+                                "errorType": {
+                                    "type": "string",
+                                    "description": "Type of error (e.g., ValidationError, InvalidInput)"
+                                },
+                                "errorCode": {
+                                    "type": "string",
+                                    "description": "Machine-readable error code"
+                                },
+                                "details": {
+                                    "type": "string",
+                                    "description": "Additional error details"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "description": "Error message"
+                                },
+                                "errorType": {
+                                    "type": "string",
+                                    "description": "Type of error (e.g., ModelError, ToolExecutionError, NetworkError)"
+                                },
+                                "errorCode": {
+                                    "type": "string",
+                                    "description": "Machine-readable error code"
+                                },
+                                "details": {
+                                    "type": "string",
+                                    "description": "Stack trace or additional error information"
+                                },
+                                "response": {
+                                    "type": "string",
+                                    "description": "Null response field for consistency"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "parameters": {},
+    "responses": {},
+    "securityDefinitions": {},
+    "security": [],
+    "tags": []
+}

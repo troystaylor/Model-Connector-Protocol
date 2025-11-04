@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "connectionParameters": {
+      "ai_api_key": {
+        "type": "securestring",
+        "uiDefinition": {
+          "displayName": "AI Model API Key",
+          "description": "Enter your Anthropic or OpenAI API key for AI orchestration",
+          "tooltip": "API key for Claude (Anthropic) or GPT (OpenAI) models",
+          "constraints": {
+            "tabIndex": 1,
+            "clearText": false,
+            "required": "true"
+          }
+        }
+      }
+    },
+    "iconBrandColor": "#da3b01",
+    "capabilities": [],
+    "policyTemplateInstances": [
+      {
+        "templateId": "setheader",
+        "title": "Set AI API Key Header",
+        "parameters": {
+          "x-ms-apimTemplateParameter.name": "ai_api_key",
+          "x-ms-apimTemplateParameter.value": "@connectionParameters('ai_api_key')",
+          "x-ms-apimTemplateParameter.existsAction": "override",
+          "x-ms-apimTemplate-policySection": "Request",
+          "x-ms-apimTemplate-operationName": ["InvokeMCP"]
+        }
+      }
+    ],
+    "publisher": "Troy Taylor",
+    "stackOwner": "Model Context Protocol"
+  }
+}

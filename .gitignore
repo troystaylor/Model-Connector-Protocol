@@ -1,0 +1,11 @@
+# Documentation folder (contains Azure-specific setup with personal info)
+Documentation/
+
+# VS Code workspace settings
+.vscode/
+
+# Power Platform CLI temp files
+*.zip
+
+# Workspace file
+*.code-workspace
