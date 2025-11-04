@@ -36,7 +36,7 @@ AI assistant powered by Microsoft Learn documentation. Ask questions about Micro
 
 ```
 Model Connector Protocol/
-├── README.md                           # This file - repository overview
+├── readme.md                           # This file - repository overview
 ├── Generic-MCP-Connector.md            # Generic MCP Connector documentation
 ├── script.csx                          # Generic MCP Connector code
 ├── apiDefinition.swagger.json         # Generic connector API definition
@@ -90,7 +90,7 @@ Model Connector Protocol/
 
 3. **Create the connector:**
    ```powershell
-   pac connector create --settings-file apiProperties.json
+   pac connector create --api-definition-file apiDefinition.swagger.json --api-properties-file apiProperties.json --script-file script.csx
    ```
 
 4. **Create connection in Power Automate:**
